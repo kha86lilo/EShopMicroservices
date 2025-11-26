@@ -1,6 +1,14 @@
-@Catalog_HostAddress = http://localhost:5121
+@Catalog_HostAddress = http://localhost:8080
 
-GET {{Catalog_HostAddress}}/weatherforecast/
+POST  {{Catalog_HostAddress}}/products/
 Accept: application/json
+Content-Type: application/json
 
+{
+  "name": "Sample Product",
+  "description": "This is a sample product description.",
+  "price": 19.99,
+  "categoryId": "12345",
+  "imageUrl": "http://example.com/image.jpg"
+}
 ###
