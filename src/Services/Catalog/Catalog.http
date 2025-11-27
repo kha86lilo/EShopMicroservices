@@ -1,4 +1,4 @@
-@Catalog_HostAddress = http://localhost:8080
+@Catalog_HostAddress = https://localhost:5050
 
 POST  {{Catalog_HostAddress}}/products/
 Accept: application/json
@@ -8,7 +8,36 @@ Content-Type: application/json
   "name": "Sample Product",
   "description": "This is a sample product description.",
   "price": 19.99,
-  "categoryId": "12345",
+  "category": ["12345","9999"],
   "imageUrl": "http://example.com/image.jpg"
 }
+###
+
+GET  {{Catalog_HostAddress}}/products/
+Accept: application/json
+###
+
+GET  {{Catalog_HostAddress}}/products/019ac6f5-0257-4345-bf09-18a0d39a6ecd
+Accept: application/json
+###
+
+GET  {{Catalog_HostAddress}}/products/category/12345
+Accept: application/json
+###
+
+PUT  {{Catalog_HostAddress}}/products 
+Accept: application/json  
+Content-Type: application/json
+
+{
+  "id":"019ac688-5ee5-461d-9175-dd70eed80b97",
+  "name": "Updated Product Name",
+  "description": "Updated description for the product.",
+  "price": 29.99,
+  "category": ["12345","99991"],
+  "imageUrl": "http://example.com/updated-image.jpg"
+}
+###
+DELETE  {{Catalog_HostAddress}}/products/019ac688-5ee5-461d-9175-dd70eed80b97
+Accept: application/json
 ###
