@@ -9,10 +9,10 @@ USER app
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG configuration=Release
 WORKDIR /src
-COPY ["EShopMicroservices/src/Services/Catalog/Catalog.csproj", "EShopMicroservices/src/Services/Catalog/"]
-RUN dotnet restore "EShopMicroservices/src/Services/Catalog/Catalog.csproj"
+COPY ["src/Services/Catalog/Catalog.csproj", "src/Services/Catalog/"]
+RUN dotnet restore "src/Services/Catalog/Catalog.csproj"
 COPY . .
-WORKDIR "/src/EShopMicroservices/src/Services/Catalog"
+WORKDIR "/src/src/Services/Catalog"
 RUN dotnet build "Catalog.csproj" -c $configuration -o /app/build
 
 FROM build AS publish
