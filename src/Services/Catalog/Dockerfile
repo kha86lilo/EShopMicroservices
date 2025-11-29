@@ -1,15 +1,16 @@
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
+USER app
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-ENV ASPNETCORE_URLS=http://+:8080
+##ENV ASPNETCORE_URLS=http://+:8080
 
-USER app
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG configuration=Release
 WORKDIR /src
 COPY ["src/Services/Catalog/Catalog.csproj", "src/Services/Catalog/"]
+COPY ["src/BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj", "src/BuildingBlocks/"]
 RUN dotnet restore "src/Services/Catalog/Catalog.csproj"
 COPY . .
 WORKDIR "/src/src/Services/Catalog"
