@@ -1,6 +1,7 @@
-var builder = WebApplication.CreateBuilder(args);
+using BuildingBlocks.Behaviors;
 
-builder.Services.AddCarter();
+var builder = WebApplication.CreateBuilder(args);
+var assembly = typeof(Program).Assembly;
 builder
     .Services.AddMarten(options =>
     {
@@ -9,8 +10,11 @@ builder
     .UseLightweightSessions();
 builder.Services.AddMediatR(config =>
 {
-    config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    config.RegisterServicesFromAssembly(assembly);
+    config.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
+builder.Services.AddValidatorsFromAssembly(assembly);
+builder.Services.AddCarter();
 
 var app = builder.Build();
 app.MapCarter();
