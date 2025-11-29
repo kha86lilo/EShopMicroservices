@@ -11,7 +11,6 @@ public record UpdateProductCommand(
 
 public record UpdateProductResult(bool Success);
 
-
 public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
 {
     public UpdateProductCommandValidator()
@@ -36,17 +35,14 @@ public class UpdateProductCommandValidator : AbstractValidator<UpdateProductComm
     }
 }
 
-internal class UpdateProductCommandHandler(
-    ILogger<UpdateProductCommandHandler> logger,
-    IDocumentSession session
-) : ICommandHandler<UpdateProductCommand, UpdateProductResult>
+internal class UpdateProductCommandHandler(IDocumentSession session)
+    : ICommandHandler<UpdateProductCommand, UpdateProductResult>
 {
     public async Task<UpdateProductResult> Handle(
         UpdateProductCommand command,
         CancellationToken cancellationToken
     )
     {
-        logger.LogInformation("Updating product with ID {ProductId}", command.Id);
         var product = await session.LoadAsync<Product>(command.Id, cancellationToken);
 
         if (product == null)
