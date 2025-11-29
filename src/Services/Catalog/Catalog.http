@@ -1,5 +1,10 @@
 @Catalog_HostAddress = https://localhost:5050
 
+GET {{Catalog_HostAddress}}/health
+Accept: application/json
+###
+
+
 POST  {{Catalog_HostAddress}}/products/
 Accept: application/json
 Content-Type: application/json
@@ -13,7 +18,7 @@ Content-Type: application/json
 }
 ###
 
-GET  {{Catalog_HostAddress}}/products/
+GET  {{Catalog_HostAddress}}/products?pageSize=3&pageNumber=3
 Accept: application/json
 ###
 
