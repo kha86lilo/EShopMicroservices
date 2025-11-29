@@ -22,7 +22,7 @@ internal class GetProductByIdHandler(
         if (product == null)
         {
             logger.LogWarning("Product with ID {ProductId} not found.", request.ProductId);
-            throw new ProductNotFoundException($"Product with ID {request.ProductId} not found.");
+            throw new ProductNotFoundException(request.ProductId);
         }
         return new GetProductByIdResult(product);
     }

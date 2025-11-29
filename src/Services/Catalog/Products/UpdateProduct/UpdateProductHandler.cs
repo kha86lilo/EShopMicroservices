@@ -51,7 +51,7 @@ internal class UpdateProductCommandHandler(
 
         if (product == null)
         {
-            throw new ProductNotFoundException($"Product with ID {command.Id} not found.");
+            throw new ProductNotFoundException(command.Id);
         }
 
         product.Name = command.Name;
