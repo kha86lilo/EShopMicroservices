@@ -1,4 +1,4 @@
-@Catalog_HostAddress = https://localhost:5050
+@Catalog_HostAddress = https://localhost:6001
 
 GET {{Catalog_HostAddress}}/health
 Accept: application/json

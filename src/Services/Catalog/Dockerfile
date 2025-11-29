@@ -9,11 +9,11 @@ EXPOSE 8081
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG configuration=Release
 WORKDIR /src
-COPY ["src/Services/Catalog/Catalog.csproj", "src/Services/Catalog/"]
-COPY ["src/BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj", "src/BuildingBlocks/"]
-RUN dotnet restore "src/Services/Catalog/Catalog.csproj"
-COPY . .
-WORKDIR "/src/src/Services/Catalog"
+COPY ["src/Services/Catalog/Catalog.csproj", "Services/Catalog/"]
+COPY ["src/BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj", "BuildingBlocks/BuildingBlocks/"]
+RUN dotnet restore "Services/Catalog/Catalog.csproj"
+COPY ./src .
+WORKDIR "/src/Services/Catalog"
 RUN dotnet build "Catalog.csproj" -c $configuration -o /app/build
 
 FROM build AS publish
