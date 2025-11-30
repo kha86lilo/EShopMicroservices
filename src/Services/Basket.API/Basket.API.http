@@ -1,0 +1,31 @@
+@BasketAPI_HostAddress = https://localhost:5051
+
+GET {{BasketAPI_HostAddress}}/health
+Accept: application/json
+###
+GET  {{BasketAPI_HostAddress}}/Basket/username
+Accept: application/json
+###
+POST  {{BasketAPI_HostAddress}}/Basket
+Accept: application/json
+Content-Type: application/json
+
+{
+  "Cart":{
+    "UserName": "username",
+    "Items": [
+      {
+        "ProductId": "019ac6f5-0257-4345-bf09-18a0d39a6ecd",
+        "ProductName": "Sample Product",
+        "Quantity": 2,
+        "Price": 19.99,
+        "Color": "Red"
+      }
+    ]
+}
+    
+}
+###
+DELETE  {{BasketAPI_HostAddress}}/Basket/username
+Accept: application/json  
+###
