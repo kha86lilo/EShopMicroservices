@@ -10,5 +10,5 @@ public interface IBasketRepository
         ShoppingCart basket,
         CancellationToken cancellationToken = default
     );
-    Task DeleteBasketAsync(string userName, CancellationToken cancellationToken = default);
+    Task<bool> DeleteBasketAsync(string userName, CancellationToken cancellationToken = default);
 }

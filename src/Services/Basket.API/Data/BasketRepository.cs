@@ -23,12 +23,13 @@ public class BasketRepository(IDocumentSession session) : IBasketRepository
         return basket;
     }
 
-    public async Task DeleteBasketAsync(
+    public async Task<bool> DeleteBasketAsync(
         string userName,
         CancellationToken cancellationToken = default
     )
     {
         session.DeleteWhere<ShoppingCart>(x => x.UserName == userName);
         await session.SaveChangesAsync(cancellationToken);
+        return true;
     }
 }

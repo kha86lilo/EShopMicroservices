@@ -17,11 +17,34 @@ services:
       - catalogdb
     ports:
       - "6000:8080"
-      - "6001:8081"
+      - "6060:8081"
     restart: always
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ./src/Services/Catalog/https:/https:ro
+  basket.api:
+    image: ${DOCKER_REGISTRY-}basket.api
+    build:
+      context: .
+      dockerfile: src/Services/Basket.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ConnectionStrings__Database=Server=basketdb;Database=BasketDb;Username=postgres;Password=postgres
+      - ConnectionStrings__Redis=distributedcache:6379
+    depends_on:
+      - basketdb
+      - distributedcache
+    ports:
+      - "6001:8080"
+      - "6061:8081"
+    restart: always
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ./src/Services/Basket.API/https:/https:ro
   catalogdb:
     image: postgres
     container_name: catalogdb
@@ -48,6 +71,13 @@ services:
     volumes:
       - postgres_basket:/var/lib/postgresql
 
+  distributedcache:
+    image: redis
+    container_name: distributedcache 
+    restart: always
+    ports:
+      - "6379:6379" 
+
 volumes:
   postgres_catalog:
-  postgres_basket:
+  postgres_basket: 
