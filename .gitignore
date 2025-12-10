@@ -54,3 +54,6 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 /src/.vs
+src/Services/Basket.API/Basket.API.csproj.user
+src/Services/Catalog/Catalog.csproj.user
+src/Services/Ordering/Ordering.API/Ordering.API.csproj.user

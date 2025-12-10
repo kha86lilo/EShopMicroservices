@@ -2,7 +2,7 @@ namespace Basket.API.Data;
 
 public class BasketRepository(IDocumentSession session) : IBasketRepository
 {
-    public async Task<ShoppingCart?> GetBasketAsync(
+    public async Task<ShoppingCart> GetBasketAsync(
         string userName,
         CancellationToken cancellationToken = default
     )

@@ -11,5 +11,4 @@ global using HealthChecks.UI.Client;
 global using Mapster;
 global using Marten;
 global using MediatR;
-global using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 global using Microsoft.Extensions.Caching.Hybrid;

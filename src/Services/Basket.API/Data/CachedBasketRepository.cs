@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Caching.Hybrid;
-
 namespace Basket.API.Data;
 
 public class CachedBasketRepository(IBasketRepository repository, HybridCache cache)
