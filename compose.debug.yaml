@@ -25,6 +25,59 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ./src/Services/Catalog/https:/https:ro
+  
+  basket.api:
+    image: ${DOCKER_REGISTRY-}basket.api-Debug
+    container_name: basket.api.debug
+    build:
+      context: .
+      dockerfile: src/Services/Basket.API/Dockerfile
+      args:
+        - configuration=Debug
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ConnectionStrings__Database=Server=basketdb;Database=BasketDb;Username=postgres;Password=postgres
+      - ConnectionStrings__Redis=distributedcache:6379
+      - GrpcSettings__DiscountUrl=http://discount.grpc:8080
+    depends_on:
+      - basketdb
+      - distributedcache
+      - discount.grpc
+    ports:
+      - "7002:8080"
+      - "7003:8081"
+    restart: always
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ./src/Services/Basket.API/https:/https:ro
+  
+  discount.grpc:
+    image: ${DOCKER_REGISTRY-}discount.grpc-Debug
+    container_name: discount.grpc.debug
+    build:
+      context: .
+      dockerfile: src/Services/Discount.Grpc/Dockerfile
+      args:
+        - configuration=Debug
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ConnectionStrings__Database=Data Source=discount.db
+    ports:
+      - "7004:8080"
+      - "7005:8081"
+    restart: always
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ./src/Services/Discount.Grpc/https:/https:ro
+  
   catalogdb:
     image: postgres
     container_name: catalogdb
@@ -38,5 +91,26 @@ services:
     volumes:
       - postgres_catalog:/var/lib/postgresql
 
+  basketdb:
+    image: postgres
+    container_name: basketdb
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=BasketDb
+    restart: always
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_basket:/var/lib/postgresql
+
+  distributedcache:
+    image: redis
+    container_name: distributedcache
+    restart: always
+    ports:
+      - "6379:6379"
+
 volumes:
   postgres_catalog:
+  postgres_basket:

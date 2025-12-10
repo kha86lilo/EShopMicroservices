@@ -3,7 +3,7 @@
 GET {{BasketAPI_HostAddress}}/health
 Accept: application/json
 ###
-GET  {{BasketAPI_HostAddress}}/Basket/username
+GET  {{BasketAPI_HostAddress}}/Basket/test
 Accept: application/json
 ###
 POST  {{BasketAPI_HostAddress}}/Basket
@@ -12,13 +12,13 @@ Content-Type: application/json
 
 {
   "Cart":{
-    "UserName": "username",
+    "UserName": "test",
     "Items": [
       {
         "ProductId": "019ac6f5-0257-4345-bf09-18a0d39a6ecd",
-        "ProductName": "Sample Product",
+        "ProductName": "IPhone X",
         "Quantity": 2,
-        "Price": 19.99,
+        "Price": 1119.99,
         "Color": "Red"
       }
     ]
@@ -26,6 +26,6 @@ Content-Type: application/json
     
 }
 ###
-DELETE  {{BasketAPI_HostAddress}}/Basket/username
+DELETE  {{BasketAPI_HostAddress}}/Basket/test
 Accept: application/json  
 ###

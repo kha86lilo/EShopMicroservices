@@ -1,5 +1,8 @@
+using Discount.Grpc;
+
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssemblyContaining<Program>();
@@ -8,6 +11,7 @@ builder.Services.AddMediatR(cfg =>
 });
 builder.Services.AddCarter();
 
+// Add Data services to the container.
 builder
     .Services.AddMarten(options =>
     {
@@ -32,11 +36,29 @@ builder.Services.AddHybridCache(options =>
 
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 builder.Services.Decorate<IBasketRepository, CachedBasketRepository>();
+
+//Add cross-cutting concerns
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 builder
     .Services.AddHealthChecks()
     .AddNpgSql(builder.Configuration.GetConnectionString("Database")!)
     .AddRedis(builder.Configuration.GetConnectionString("Redis")!);
+
+//Add gRPC
+builder
+    .Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
+    {
+        options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
+    })
+    .ConfigurePrimaryHttpMessageHandler(() =>
+    {
+        var handler = new HttpClientHandler();
+        // Allow insecure HTTP/2 connections for development
+        handler.ServerCertificateCustomValidationCallback =
+            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+        return handler;
+    });
+
 var app = builder.Build();
 
 app.MapCarter();
