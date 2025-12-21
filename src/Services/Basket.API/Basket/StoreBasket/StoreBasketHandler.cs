@@ -15,8 +15,10 @@ public class StoreBasketValidator : AbstractValidator<StoreBasketCommand>
     }
 }
 
-internal class StoreBasketCommandHandler(IBasketRepository basketRepository, DiscountProtoService.DiscountProtoServiceClient discountProto)
-    : ICommandHandler<StoreBasketCommand, StoreBasketResult>
+internal class StoreBasketCommandHandler(
+    IBasketRepository basketRepository,
+    DiscountProtoService.DiscountProtoServiceClient discountProto
+) : ICommandHandler<StoreBasketCommand, StoreBasketResult>
 {
     public async Task<StoreBasketResult> Handle(
         StoreBasketCommand command,
@@ -27,12 +29,16 @@ internal class StoreBasketCommandHandler(IBasketRepository basketRepository, Dis
         await basketRepository.StoreBasketAsync(command.Cart, cancellationToken);
         return new StoreBasketResult(command.Cart.UserName);
     }
+
     private async Task ApplyDiscounts(ShoppingCart cart, CancellationToken cancellationToken)
     {
         foreach (var item in cart.Items)
         {
             var discountRequest = new GetDiscountRequest { ProductName = item.ProductName };
-            var discountResponse = await discountProto.GetDiscountAsync(discountRequest, cancellationToken: cancellationToken);
+            var discountResponse = await discountProto.GetDiscountAsync(
+                discountRequest,
+                cancellationToken: cancellationToken
+            );
             item.Price -= discountResponse.Amount;
         }
     }

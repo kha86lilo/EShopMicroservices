@@ -15,43 +15,22 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
     )
     {
         logger.LogError("Error Message: {Message} at {Time}", exception.Message, DateTime.UtcNow);
-        (string Details, string Title, int StatusCode) details = exception switch
+        context.Response.StatusCode = exception switch
         {
-            InternalServerException => (
-                exception.Message,
-                exception.GetType().Name,
-                context.Response.StatusCode = StatusCodes.Status500InternalServerError
-            ),
-            ValidationException => (
-                exception.Message,
-                exception.GetType().Name,
-                context.Response.StatusCode = StatusCodes.Status400BadRequest
-            ),
-            BadRequestException => (
-                exception.Message,
-                exception.GetType().Name,
-                context.Response.StatusCode = StatusCodes.Status400BadRequest
-            ),
-            NotFoundException => (
-                exception.Message,
-                exception.GetType().Name,
-                context.Response.StatusCode = StatusCodes.Status404NotFound
-            ),
-            _ => (
-                exception.StackTrace ?? "No stack trace available.",
-                "An unexpected error occurred.",
-                StatusCodes.Status500InternalServerError
-            ),
+            InternalServerException => StatusCodes.Status500InternalServerError,
+            ValidationException => StatusCodes.Status400BadRequest,
+            BadRequestException => StatusCodes.Status400BadRequest,
+            NotFoundException => StatusCodes.Status404NotFound,
+            _ => StatusCodes.Status500InternalServerError,
         };
 
         var problemDetails = new ProblemDetails
         {
-            Title = details.Title,
-            Detail = details.Details,
-            Status = details.StatusCode,
+            Title = exception.Message,
+            Detail = exception.GetType().Name,
+            Status = context.Response.StatusCode,
             Instance = context.Request.Path,
         };
-
         problemDetails.Extensions.Add("traceId", context.TraceIdentifier);
         if (exception is ValidationException validationException)
         {

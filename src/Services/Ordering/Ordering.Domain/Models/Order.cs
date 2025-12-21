@@ -14,7 +14,11 @@ public class Order : Aggregate<OrderId>
     public Payment Payment { get; private set; } = default!;
     public OrderStatus Status { get; private set; } = OrderStatus.Pending;
 
-    public decimal TotalPrice => OrderItems.Sum(oi => oi.Price * oi.Quantity);
+    public decimal TotalPrice
+    {
+        get => OrderItems.Sum(oi => oi.Price * oi.Quantity);
+        private set { }
+    }
 
     public static Order Create(
         OrderId orderId,
@@ -22,8 +26,7 @@ public class Order : Aggregate<OrderId>
         CustomerId customerId,
         Address shippingAddress,
         Address billingAddress,
-        Payment payment,
-        IEnumerable<OrderItem> orderItems
+        Payment payment
     )
     {
         var order = new Order
@@ -56,11 +59,11 @@ public class Order : Aggregate<OrderId>
         AddDomainEvent(new OrderUpdatedDomainEvent(this));
     }
 
-    public void AddOrderItem(Product product, decimal price, int quantity)
+    public void AddOrderItem(ProductId productId, decimal price, int quantity)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(quantity);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
-        var orderItem = new OrderItem(product.Id, Id, price, quantity);
+        var orderItem = new OrderItem(productId, Id, price, quantity);
         _orderItems.Add(orderItem);
         AddDomainEvent(new OrderUpdatedDomainEvent(this));
     }

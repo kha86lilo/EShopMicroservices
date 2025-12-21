@@ -5,7 +5,7 @@ public class Address
     public string FirstName { get; private set; } = default!;
     public string LastName { get; private set; } = default!;
     public string EmailAddress { get; private set; } = default!;
-    public string AddressLine1 { get; private set; } = default!;
+    public string AddressLine { get; private set; } = default!;
     public string? AddressLine2 { get; private set; } = default!;
     public string Country { get; private set; } = default!;
     public string State { get; private set; } = default!;
@@ -27,7 +27,7 @@ public class Address
         FirstName = firstName;
         LastName = lastName;
         EmailAddress = emailAddress;
-        AddressLine1 = addressLine1;
+        AddressLine = addressLine1;
         AddressLine2 = addressLine2;
         Country = country;
         State = state;
