@@ -1,5 +1,4 @@
 global using BuildingBlocks.CQRS;
-global using EShopMicroservices.Services.Ordering.Application.Orders.Commands.CreateOrder;
 global using FluentValidation;
 global using Microsoft.EntityFrameworkCore;
 global using Ordering.Application.Data;

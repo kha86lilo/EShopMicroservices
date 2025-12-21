@@ -1,6 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-
-namespace Ordering.Application.Orders.Queries.GetOrdersByCustomer;
+namespace Ordering.Application.Orders.Queries;
 
 public class GetOrdersByCustomerHandler(IApplicationDbContext dbContext)
     : IQueryHandler<GetOrdersByCustomerQuery, GetOrdersByCustomerResult>

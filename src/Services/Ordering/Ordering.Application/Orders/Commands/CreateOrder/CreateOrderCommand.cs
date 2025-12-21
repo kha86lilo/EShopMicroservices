@@ -1,6 +1,4 @@
-using FluentValidation;
-
-namespace EShopMicroservices.Services.Ordering.Application.Orders.Commands.CreateOrder;
+namespace Ordering.Application.Orders.Commands;
 
 public record CreateOrderCommand(OrderDto Order) : ICommand<CreateOrderResult>;
 

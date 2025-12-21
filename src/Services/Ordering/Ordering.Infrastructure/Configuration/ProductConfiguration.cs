@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 namespace Ordering.Infrastructure.Configuration;
 
 public class ProductConfiguration : IEntityTypeConfiguration<Product>

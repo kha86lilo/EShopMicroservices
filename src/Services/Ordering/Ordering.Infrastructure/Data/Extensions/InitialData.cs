@@ -96,8 +96,7 @@ internal static class InitialData
             CustomerId.Of(new Guid("11111111-1111-1111-1111-111111111111")),
             address1,
             address1,
-            payment1,
-            new List<OrderItem>()
+            payment1
         );
 
         var order2 = Order.Create(
@@ -106,8 +105,7 @@ internal static class InitialData
             CustomerId.Of(new Guid("22222222-2222-2222-2222-222222222222")),
             address2,
             address2,
-            payment2,
-            new List<OrderItem>()
+            payment2
         );
 
         return new List<Order> { order1, order2 };

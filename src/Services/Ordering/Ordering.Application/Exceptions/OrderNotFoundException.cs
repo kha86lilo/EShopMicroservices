@@ -1,4 +1,3 @@
-using System;
 using BuildingBlocks.Exceptions;
 
 namespace Ordering.Application.Exceptions;
