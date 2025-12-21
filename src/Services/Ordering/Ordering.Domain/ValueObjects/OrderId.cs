@@ -8,7 +8,6 @@ public record OrderId
 
     public static OrderId Of(Guid value)
     {
-        ArgumentNullException.ThrowIfNull(value);
         if (value == Guid.Empty)
             throw new DomainException("OrderId must not be empty.", nameof(value));
 
